@@ -12,7 +12,7 @@
 #import "UIImage+changeSize.h"
 @interface ZXPictureCell()
 
-
+@property (nonatomic,strong)UILabel *lbl;
 
 @end
 
@@ -37,7 +37,8 @@
         self.imageVw.image=image;
         
     }];
-
+    
+    self.lbl.text=model.fileName;
 
 }
 
@@ -45,8 +46,14 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        
+        UILabel *lbl=[UILabel new];
+        [self.contentView addSubview:lbl];
+        self.lbl=lbl;
+        self.lbl.textColor=[UIColor whiteColor];
+        self.lbl.frame=self.bounds;
+        self.lbl.textAlignment=NSTextAlignmentCenter;
         //添加图片框
-      
         UIImageView *imgVw=[UIImageView new];
         [self.contentView addSubview:imgVw];
         self.imageVw=imgVw;
@@ -56,6 +63,9 @@
         self.imageVw.contentMode=UIViewContentModeScaleAspectFill;
         self.imageVw.clipsToBounds=YES;
         self.imageVw.frame=self.bounds;
+        
+    
+        
         
         //添加长按事件
         UILongPressGestureRecognizer *longPress=[[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPress:)];
