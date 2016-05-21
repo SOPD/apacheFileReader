@@ -51,9 +51,10 @@
 ## 重要提示  
 ### 获取服务器地址 如手机与服务器在同一局域网内建议使用服务器的DHCP地址
 
-##可重用代码资源 
-* 类似系统自带相册的图片浏览器 
-# 预览图片
+## 可重用代码资源 
+* 类似系统自带相册的图片浏览器
+## 预览图片
+
 ![picture2](http://ww3.sinaimg.cn/mw690/be3cd04ajw1f437xlzzb1j20ku112gml.jpg)
 ![picture3](http://ww3.sinaimg.cn/mw690/be3cd04ajw1f437yk0pnuj20ku1127jx.jpg)
 ![picture3](http://ww1.sinaimg.cn/mw690/be3cd04ajw1f437y7qb1wj20ku1127a0.jpg)
