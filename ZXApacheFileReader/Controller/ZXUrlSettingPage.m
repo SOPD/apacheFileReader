@@ -117,41 +117,43 @@
             
             
             
-            
+         
             
             //定义长按调用的BLOCK
             homePage.HomeBlock=^(NSIndexPath *index,ZXPictureCell *cell){
-                
-          //      添加选项
-                UIAlertController *alert=[UIAlertController alertControllerWithTitle:@"保存这张图片" message:nil preferredStyle:UIAlertControllerStyleAlert];
-                
-                //保存选项
-                UIAlertAction *action=[UIAlertAction actionWithTitle:@"保存" style: UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    //拼接完整地址
-                    NSString *baseUrl=cell.url;
-                    NSString *path=cell.model.filePath;
-                    NSString *url=[NSString stringWithFormat:@"http://%@/%@",baseUrl,path];
+                if ([cell.model.fileType isEqualToString:@"image"]) {
+                    //添加选项
+                    UIAlertController *alert=[UIAlertController alertControllerWithTitle:@"保存这张图片" message:nil preferredStyle:UIAlertControllerStyleAlert];
                     
-                    //下载图片
-                    [self downLoadImage:url];
-           
-                }];
-                
-                
-                //取消选项
-                UIAlertAction *action2=[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                    //保存选项
+                    UIAlertAction *action=[UIAlertAction actionWithTitle:@"保存" style: UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        //拼接完整地址
+                        NSString *baseUrl=cell.url;
+                        NSString *path=cell.model.filePath;
+                        NSString *url=[NSString stringWithFormat:@"http://%@/%@",baseUrl,path];
+                        
+                        //下载图片
+                        [self downLoadImage:url];
+                        
+                    }];
                     
-                }];
-                
-                [alert addAction:action];
-                [alert addAction:action2];
-                
-              
-          //      显示AlertView
-            [self.home presentViewController:alert animated:YES completion:nil];
+                    
+                    //取消选项
+                    UIAlertAction *action2=[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                        
+                    }];
+                    
+                    [alert addAction:action];
+                    [alert addAction:action2];
+                    
+                    
+                    //      显示AlertView
+                    [self.home presentViewController:alert animated:YES completion:nil];
+                    
+                };
 
-            };
-            
+                };
+                
             //显示homePage
             [self presentViewController:homePage animated:YES completion:^{
                 

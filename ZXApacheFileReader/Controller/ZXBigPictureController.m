@@ -134,6 +134,7 @@
     //添加旋转事件
     UIRotationGestureRecognizer *rota=[[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(imgRotation:)];
     [self.imgVw addGestureRecognizer:rota];
+    //rota.delegate=self;
     
     //添加长按事件
     UILongPressGestureRecognizer *longest=[[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPress:)];
@@ -147,8 +148,13 @@
 
 }
 
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 
 
+{
+
+    return YES;
+}
 
 
 -(void)imgRotation:(UIRotationGestureRecognizer *)sender{
@@ -156,7 +162,7 @@
     CGFloat width=self.scrollerVw.contentSize.width>self.scrollerVw.contentSize.height?self.scrollerVw.contentSize.width:self.scrollerVw.contentSize.height;
     
     self.scrollerVw.contentSize=CGSizeMake(width,width);
-    self.scrollerVw.contentInset=UIEdgeInsetsMake(0.3*width, 0.3*width, 0.3*width, 0);
+    self.scrollerVw.contentInset=UIEdgeInsetsMake(0.3*width, 0.3*width, 0, 0);
     
 }
 
@@ -171,15 +177,22 @@
 -(void)doubleTouch:(UIPinchGestureRecognizer *)sender{
     self.changeValue=sender.velocity;
 
-    self.transForm=self.transForm+0.03*self.changeValue;
+    self.transForm=1+0.03*self.changeValue;
     
     if (sender.numberOfTouches==2) {
         if (self.imgVw.frame.size.height<[UIScreen mainScreen].bounds.size.height*6) {
 
             
-            self.imgVw.transform=CGAffineTransformMakeScale(self.transForm, self.transForm);
-        }    }
-    
+            self.imgVw.transform=CGAffineTransformScale(self.imgVw.transform, self.transForm, self.transForm);
+        } else{
+        [UIView animateWithDuration:0.25 animations:^{
+                self.imgVw.transform=CGAffineTransformMakeScale(5.95    , 5.95);
+        }];
+
+        
+        
+        
+        }   }
 
 
     
@@ -205,7 +218,7 @@
     dispatch_queue_t queue3=dispatch_queue_create("zx", DISPATCH_QUEUE_CONCURRENT);
     
     dispatch_sync(queue3, ^{
-        if ((self.imgVw.frame.size.width<self.imgVw.image.size.width/2)&&(long)sender.state==3) {
+        if ((self.imgVw.frame.size.width<[UIScreen mainScreen].bounds.size.width/2)&&(long)sender.state==3) {
             [self back];
         }
     });
@@ -216,7 +229,8 @@
 -(void)back{
 [[SDWebImageManager sharedManager] cancelAll];
     if (self.imgVw.image) {
-        [UIView animateWithDuration:0.4 animations:^{
+        [UIView animateWithDuration:0.5 animations:^{
+            self.imgVw.transform=CGAffineTransformMakeRotation(0);
             self.view.backgroundColor=[UIColor clearColor];
             self.scrollerVw.backgroundColor=[UIColor clearColor];
             
@@ -242,7 +256,7 @@
         }];
     }
 
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.51 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
     [self.view removeFromSuperview];
         
     });
