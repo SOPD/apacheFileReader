@@ -131,6 +131,7 @@
     
     self.imgVw.userInteractionEnabled=YES;
     
+    //添加旋转事件
     UIRotationGestureRecognizer *rota=[[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(imgRotation:)];
     [self.imgVw addGestureRecognizer:rota];
     
@@ -151,10 +152,12 @@
 
 
 -(void)imgRotation:(UIRotationGestureRecognizer *)sender{
-    NSLog(@"%f,%f",sender.rotation,sender.velocity);
-
-
-
+    self.imgVw.transform=CGAffineTransformRotate(self.imgVw.transform, sender.velocity*0.04);
+    CGFloat width=self.scrollerVw.contentSize.width>self.scrollerVw.contentSize.height?self.scrollerVw.contentSize.width:self.scrollerVw.contentSize.height;
+    
+    self.scrollerVw.contentSize=CGSizeMake(width,width);
+    self.scrollerVw.contentInset=UIEdgeInsetsMake(0.3*width, 0.3*width, 0.3*width, 0);
+    
 }
 
 
@@ -202,7 +205,7 @@
     dispatch_queue_t queue3=dispatch_queue_create("zx", DISPATCH_QUEUE_CONCURRENT);
     
     dispatch_sync(queue3, ^{
-        if ((self.imgVw.frame.size.width<self.imgVw.image.size.width)&&(long)sender.state==3) {
+        if ((self.imgVw.frame.size.width<self.imgVw.image.size.width/2)&&(long)sender.state==3) {
             [self back];
         }
     });
