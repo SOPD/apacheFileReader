@@ -131,16 +131,16 @@
     
     self.imgVw.userInteractionEnabled=YES;
     
-    //添加旋转事件
+    //添加旋转手势
     UIRotationGestureRecognizer *rota=[[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(imgRotation:)];
     [self.imgVw addGestureRecognizer:rota];
     //rota.delegate=self;
     
-    //添加长按事件
+    //添加长按手势
     UILongPressGestureRecognizer *longest=[[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPress:)];
     
     [self.imgVw addGestureRecognizer:longest];
-    //添加缩放事件
+    //添加缩放手势
     UIPinchGestureRecognizer *gest=[[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(doubleTouch:)];
     [self.imgVw addGestureRecognizer:gest];
     
@@ -152,15 +152,19 @@
 
 
 {
-
+//允许不同的手势同时执行
     return YES;
 }
 
 
 -(void)imgRotation:(UIRotationGestureRecognizer *)sender{
+    
+    //旋转手势执行
     self.imgVw.transform=CGAffineTransformRotate(self.imgVw.transform, sender.velocity*0.04);
+    
     CGFloat width=self.scrollerVw.contentSize.width>self.scrollerVw.contentSize.height?self.scrollerVw.contentSize.width:self.scrollerVw.contentSize.height;
     
+    //改变图片滚动范围
     self.scrollerVw.contentSize=CGSizeMake(width,width);
     self.scrollerVw.contentInset=UIEdgeInsetsMake(0.3*width, 0.3*width, 0, 0);
     
@@ -175,6 +179,7 @@
 
 }
 -(void)doubleTouch:(UIPinchGestureRecognizer *)sender{
+    //缩放手势执行
     self.changeValue=sender.velocity;
 
     self.transForm=1+0.03*self.changeValue;

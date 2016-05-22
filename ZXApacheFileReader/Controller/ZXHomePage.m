@@ -166,6 +166,7 @@
         bigVw.imgUrl=path;
         
         [self.view addSubview:bigVw.view];
+        bigVw.view.frame=[UIScreen mainScreen].bounds;
     }if ([model.fileType isEqualToString:@"file"]) {
         
  
