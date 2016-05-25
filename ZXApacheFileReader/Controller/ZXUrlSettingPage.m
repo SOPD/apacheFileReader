@@ -69,6 +69,7 @@
   
     
 }
+
 /**
  *  点击连接按钮
  */
@@ -79,8 +80,6 @@
     //连接地址栏中的地址
     NSString *str=[NSString stringWithFormat:@"files.json"];
     NSString *urlStr=[NSString stringWithFormat:@"http://%@/%@",self.urlField.text,str];
-
-    
 
     //发送网络请求
     [self.tool GET:urlStr parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {

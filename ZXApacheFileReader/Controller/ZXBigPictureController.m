@@ -50,6 +50,7 @@
 @property(nonatomic,strong)UIScrollView *scrollerVw;
 @property (nonatomic,assign)CGFloat transForm;
 @property(nonatomic,assign)CGFloat changeValue;
+@property(nonatomic,strong)UIButton *btn;
 @end
 
 @implementation ZXBigPictureController
@@ -107,7 +108,7 @@
     [self.view addSubview:self.scrollerVw];
 
     self.scrollerVw.frame=[UIScreen mainScreen].bounds;
-    self.scrollerVw.backgroundColor=[UIColor blackColor];
+    self.scrollerVw.backgroundColor=[UIColor whiteColor];
     
     ZXBigPictureImageView *imgVw=[[ZXBigPictureImageView alloc]init];
    
@@ -122,8 +123,8 @@
     UIButton *btn=[UIButton new];
     [btn setTitle:@"返回" forState:UIControlStateNormal];
     btn.frame=CGRectMake(10, 20,40, 40);
-    [btn setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.2]];
-    
+    [btn setBackgroundColor:[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.2]];
+    self.btn=btn;
     //添加返回上一层按钮
     [self.view addSubview:btn];
     
@@ -185,18 +186,26 @@
     self.transForm=1+0.03*self.changeValue;
     
     if (sender.numberOfTouches==2) {
-        if (self.imgVw.frame.size.height<[UIScreen mainScreen].bounds.size.height*6) {
+        if (self.imgVw.frame.size.height<[UIScreen mainScreen].bounds.size.height*5) {
 
-            
+           
             self.imgVw.transform=CGAffineTransformScale(self.imgVw.transform, self.transForm, self.transForm);
+            CGFloat alpha =((self.imgVw.frame.size.width/[UIScreen mainScreen].bounds.size.width)-0.5)*2;
+            self.view.backgroundColor=[UIColor colorWithRed:1 green:1 blue:1 alpha:alpha];
+            self.scrollerVw.backgroundColor=[UIColor colorWithRed:1 green:1 blue:1 alpha:alpha];
+        
+           
         } else{
-        [UIView animateWithDuration:0.25 animations:^{
-                self.imgVw.transform=CGAffineTransformMakeScale(5.95    , 5.95);
+            self.view.superview.userInteractionEnabled=NO;
+            
+        [UIView animateWithDuration:0.4 animations:^{
+          self.imgVw.transform=CGAffineTransformMakeScale(5.99    , 5.99);
+        } completion:^(BOOL finished) {
+            self.view.superview.userInteractionEnabled=YES;
         }];
+         
+         
 
-        
-        
-        
         }   }
 
 
@@ -216,8 +225,8 @@
     if ((self.imgVw.frame.size.height<self.view.bounds.size.height)&&(self.imgVw.frame.size.width<self.view.bounds.size.width)) {
         self.scrollerVw.contentInset=UIEdgeInsetsMake(0, 0, 0, 0);
       
-        self.view.backgroundColor=[UIColor clearColor];
-        self.scrollerVw.backgroundColor=[UIColor clearColor];
+        
+   
         
     }
     dispatch_queue_t queue3=dispatch_queue_create("zx", DISPATCH_QUEUE_CONCURRENT);
@@ -234,7 +243,10 @@
 -(void)back{
 [[SDWebImageManager sharedManager] cancelAll];
     if (self.imgVw.image) {
+       
         [UIView animateWithDuration:0.5 animations:^{
+            self.scrollerVw.contentOffset=CGPointMake(0, 0);
+            self.scrollerVw.decelerationRate = 0;
             self.imgVw.transform=CGAffineTransformMakeRotation(0);
             self.view.backgroundColor=[UIColor clearColor];
             self.scrollerVw.backgroundColor=[UIColor clearColor];
@@ -255,6 +267,7 @@
             CGFloat fw=th/h*w;
             CGFloat fx=tx-((fw-tw)/2);
             CGFloat fy=ty;
+        
             fr=CGRectMake(fx, fy, fw, fh);
             
             self.imgVw.frame=fr;

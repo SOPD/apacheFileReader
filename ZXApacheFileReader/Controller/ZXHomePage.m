@@ -59,7 +59,6 @@
     if (self.pictureUrlList.count>count) {
         for (int i=0; i<count; i++) {
             [arr addObject:self.pictureUrlList[i]];
-            
         }
     }else{
     
@@ -85,27 +84,27 @@
     
     [btn addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     
-    self.count=12;
+    self.count=30;
     //设置数据源
     self.collectionView.dataSource=self;
     self.collectionView.delegate=self;
 
     self.collectionView.backgroundColor=[UIColor whiteColor];
     
-    __unsafe_unretained UICollectionView *collenVw = self.collectionView;
-    
-   collenVw.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-   
-       if (self.downCount==0) {
-               self.count=self.count+12;
-       }
-     
-       
-       
-
-       [collenVw.mj_footer endRefreshing];
-       
-    }];
+ //   __unsafe_unretained UICollectionView *collenVw = self.collectionView;
+//    
+//   collenVw.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+//   
+//       if (self.downCount==0) {
+//               self.count=self.count+12;
+//       }
+//     
+//       
+//       
+//
+//       [collenVw.mj_footer endRefreshing];
+//       
+//    }];
 
   
 
@@ -149,6 +148,7 @@
    
     return cell;
 }
+
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *ID=@"picture_Cell";
@@ -206,6 +206,16 @@
  
 
   }
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+       NSLog(@"%f,%f",scrollView.contentOffset.y,self.count/3*100.0);
+    if (scrollView.contentOffset.y>self.count/3*100.0) {
+        
+        NSLog(@"shuaxin");
+     
+        self.count=self.count+6;
+    }
+
+}
 
 -(void)WebViewBack:(UIButton *)sender{
     [sender.superview removeFromSuperview];
