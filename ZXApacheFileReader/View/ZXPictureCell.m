@@ -36,8 +36,9 @@
         
         self.imageVw.image=image;
         
+        
     }];
-    
+  
     self.lbl.text=model.fileName;
 
 }
@@ -47,8 +48,9 @@
     self = [super initWithFrame:frame];
     if (self) {
         
+        self.contentView.backgroundColor=[UIColor blackColor];
         UILabel *lbl=[UILabel new];
-        [self.contentView addSubview:lbl];
+          [self.contentView addSubview:lbl];
         self.lbl=lbl;
         self.lbl.textColor=[UIColor whiteColor];
         self.lbl.frame=self.bounds;
@@ -58,14 +60,14 @@
         [self.contentView addSubview:imgVw];
         self.imageVw=imgVw;
         self.imageVw.frame=self.bounds;
-        [self.imageVw setBackgroundColor:[UIColor blackColor]];
-        
+        [self.imageVw setBackgroundColor:[UIColor clearColor]];
         self.imageVw.contentMode=UIViewContentModeScaleAspectFill;
+        
         self.imageVw.clipsToBounds=YES;
+        
         self.imageVw.frame=self.bounds;
-        
+      
     
-        
         
         //添加长按事件
         UILongPressGestureRecognizer *longPress=[[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPress:)];
@@ -73,6 +75,7 @@
     }
     return self;
 }
+
 -(void)longPress:(ZXPictureCell *)sender{
 
     //长按执行回调

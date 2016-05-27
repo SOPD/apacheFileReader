@@ -14,7 +14,9 @@
 #import <sys/sysctl.h>
 #import <mach/mach.h>
 #import <AVFoundation/AVFoundation.h>
-#import <MediaPlayer/MediaPlayer.h>
+#import "videoPlayerController.h"
+#import <AVKit/AVKit.h>
+
 
 @interface ZXHomePage ()
 
@@ -29,6 +31,7 @@
 @property(nonatomic,assign)int count;
 
 @property(nonatomic,assign)int downCount;
+@property(nonatomic,strong)videoPlayerController *videoVC;
 
 
 @end
@@ -167,8 +170,8 @@
         
         [self.view addSubview:bigVw.view];
         bigVw.view.frame=[UIScreen mainScreen].bounds;
-    }if ([model.fileType isEqualToString:@"file"]) {
-        
+    }if ([model.fileType isEqualToString:@"file"]&&![self fileIsVideo:model.filePath]) {
+        //使用WEBVIEW打开文档
  
         NSString *filePath= model.filePath;
         NSString *path=[NSString stringWithFormat:@"http://%@/%@",self.baseUrl,filePath];
@@ -178,11 +181,6 @@
 
         
         NSURL *URL=[NSURL URLWithString:url];
-        
-        
-//        MPMoviePlayerViewController *movieVc=[[MPMoviePlayerViewController alloc]initWithContentURL:URL];
-//        //弹出播放器
-//        [self presentMoviePlayerViewControllerAnimated:movieVc];
         
         NSURLRequest *request=[NSURLRequest requestWithURL:URL];
       
@@ -195,20 +193,53 @@
         
         btn.frame=CGRectMake(10, 20,40, 40);
         [btn setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.2]];
-        
         //添加返回上一层按钮
         [webView addSubview:btn];
-        
         [btn addTarget:self action:@selector(WebViewBack:) forControlEvents:UIControlEventTouchUpInside];
         [webView loadRequest:request];
+        
+    }if ([self fileIsVideo:model.filePath]) {
+       //使用视频播放器打开视频
+        NSString *filePath= model.filePath;
+        NSString *path=[NSString stringWithFormat:@"http://%@/%@",self.baseUrl,filePath];
+        NSURL *url=[NSURL URLWithString:[path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+      
+        self.videoVC=[videoPlayerController new];
+        self.videoVC.videoUrl=url;
+        [self.view addSubview:self.videoVC.mpC.view];
+//        AVPlayerViewController *pVC = [AVPlayerViewController new];
+//        
+//        //3. 创建player --> 设置时需要传入网址
+//        pVC.player = [AVPlayer playerWithURL:url];
+//        
+//        //4. 开始播放
+//        [pVC.player play];
+//    
+//        //5. 模态弹出
+//        //[self presentViewController:pVC animated:YES completion:nil];
+//        
+//        //5. 如果想要自定义播放器的大小,应该自定义 --> 设置frame / 添加到视图中
+//
+//        pVC.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, 400);
+//        pVC.view.center=self.view.center;
+//        
+//        // CGAffineTransform rotation = CGAffineTransformMakeRotation(M_PI_2);
+//        
+//        // pVC.view.transform=rotation;
+//        
+//        [self.view addSubview:pVC.view];
+        
+        
+        
         
     }
  
 
   }
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
-       NSLog(@"%f,%f",scrollView.contentOffset.y,self.count/3*100.0);
-    if (scrollView.contentOffset.y>self.count/3*100.0) {
+    NSLog(@"%f,%f",scrollView.contentOffset.y,((self.count/3-4)*[UIScreen mainScreen].bounds.size.height/4));
+    CGFloat slide=((self.count/3-4)*[UIScreen mainScreen].bounds.size.height/4);
+    if (scrollView.contentOffset.y>slide) {
         
         NSLog(@"shuaxin");
      
@@ -229,4 +260,36 @@
 
 }
 
+/**
+ mov m4v mp4  avi
+ */
+-(BOOL)fileIsVideo:(NSString *)fileName{
+    BOOL isVideo=NO;
+    NSArray *videoTypeList=@[@"mov",@"m4v",@"mp4",@"avi",@"AVI",@"MP4",@"M4V",@"MOV"];
+    for (NSString *type in videoTypeList) {
+        if ([fileName containsString:type]) {
+            isVideo=YES;
+            
+        }
+    }
+    return isVideo;
+
+}
+-(void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator{
+    NSLog(@"%@",NSStringFromCGSize(size));
+ 
+    UICollectionViewFlowLayout *flowLayout=[UICollectionViewFlowLayout new];
+    //设置item布局
+    flowLayout.minimumLineSpacing=1;
+    flowLayout.minimumInteritemSpacing=1;
+    CGFloat imgW=size.width/3-1;
+    CGFloat imgH=size.height/4-1;
+    flowLayout.itemSize=CGSizeMake(imgW, imgH);
+    [self.collectionView setCollectionViewLayout:flowLayout animated:YES ];
+    for (UIView *view in self.collectionView.subviews) {
+        [view removeFromSuperview];
+        }
+    [self.collectionView reloadData];
+  
+}
 @end

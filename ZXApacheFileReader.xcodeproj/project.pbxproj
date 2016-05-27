@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		040250B71CF5CC0C004195ED /* videoPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 040250B61CF5CC0C004195ED /* videoPlayerController.m */; };
 		0406AAFB1CE4ABDF00AA3B7A /* UIImage+changeSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 0406AAFA1CE4ABDF00AA3B7A /* UIImage+changeSize.m */; };
 		044D47161CEDB1AC007A3788 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 044D47151CEDB1AC007A3788 /* CoreMedia.framework */; };
 		044D47191CEDDB87007A3788 /* ZXDataCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 044D47181CEDDB87007A3788 /* ZXDataCenter.m */; };
@@ -27,6 +28,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		040250B51CF5CC0C004195ED /* videoPlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = videoPlayerController.h; sourceTree = "<group>"; };
+		040250B61CF5CC0C004195ED /* videoPlayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = videoPlayerController.m; sourceTree = "<group>"; };
 		0406AAF91CE4ABDF00AA3B7A /* UIImage+changeSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+changeSize.h"; sourceTree = "<group>"; };
 		0406AAFA1CE4ABDF00AA3B7A /* UIImage+changeSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+changeSize.m"; sourceTree = "<group>"; };
 		044D47151CEDB1AC007A3788 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -85,6 +88,8 @@
 				045941E31CE0CA1F005DA8B0 /* ZXBigPictureController.m */,
 				044D47171CEDDB87007A3788 /* ZXDataCenter.h */,
 				044D47181CEDDB87007A3788 /* ZXDataCenter.m */,
+				040250B51CF5CC0C004195ED /* videoPlayerController.h */,
+				040250B61CF5CC0C004195ED /* videoPlayerController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -312,6 +317,7 @@
 				04B63F401CE5FFC50075A9A2 /* ZXFileModel.m in Sources */,
 				049645DB1CE0790C0064F847 /* NetWorkTool.m in Sources */,
 				04B5AE551CDDDB05000C68F9 /* main.m in Sources */,
+				040250B71CF5CC0C004195ED /* videoPlayerController.m in Sources */,
 				044D47191CEDDB87007A3788 /* ZXDataCenter.m in Sources */,
 				045941EA1CE1C314005DA8B0 /* ZXBigPictureImageView.m in Sources */,
 				0406AAFB1CE4ABDF00AA3B7A /* UIImage+changeSize.m in Sources */,

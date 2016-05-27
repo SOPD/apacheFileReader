@@ -243,10 +243,10 @@
 -(void)back{
 [[SDWebImageManager sharedManager] cancelAll];
     if (self.imgVw.image) {
-       
+          self.scrollerVw.decelerationRate = 0;
         [UIView animateWithDuration:0.5 animations:^{
             self.scrollerVw.contentOffset=CGPointMake(0, 0);
-            self.scrollerVw.decelerationRate = 0;
+            
             self.imgVw.transform=CGAffineTransformMakeRotation(0);
             self.view.backgroundColor=[UIColor clearColor];
             self.scrollerVw.backgroundColor=[UIColor clearColor];
