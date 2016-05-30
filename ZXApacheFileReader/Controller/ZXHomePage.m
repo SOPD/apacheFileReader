@@ -16,9 +16,10 @@
 #import <AVFoundation/AVFoundation.h>
 #import "videoPlayerController.h"
 #import <AVKit/AVKit.h>
+#import "ZXSearchField.h"
 
 
-@interface ZXHomePage ()
+@interface ZXHomePage ()<UITextFieldDelegate>
 
 @property (nonatomic,strong)NSMutableArray *shouldShowList;
 
@@ -33,6 +34,8 @@
 @property(nonatomic,assign)int downCount;
 @property(nonatomic,strong)videoPlayerController *videoVC;
 
+@property (nonatomic,strong)ZXSearchField *searchField;
+
 
 @end
 
@@ -41,7 +44,7 @@
 -(void)setShouldShowList:(NSMutableArray *)shouldShowList{
     _shouldShowList=shouldShowList;
     
-        [self.collectionView reloadData];
+   [self.collectionView reloadData];
     
 
 }
@@ -79,7 +82,7 @@
     
     UIButton *btn=[UIButton new];
     [btn setTitle:@"返回" forState:UIControlStateNormal];
-    btn.frame=CGRectMake(10, 20,40, 40);
+    btn.frame=CGRectMake(10, 20,40, 30);
     [btn setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.2]];
     
     //添加返回上一层按钮
@@ -94,29 +97,74 @@
 
     self.collectionView.backgroundColor=[UIColor whiteColor];
     
- //   __unsafe_unretained UICollectionView *collenVw = self.collectionView;
-//    
-//   collenVw.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-//   
-//       if (self.downCount==0) {
-//               self.count=self.count+12;
-//       }
-//     
-//       
-//       
-//
-//       [collenVw.mj_footer endRefreshing];
-//       
-//    }];
-
-  
+    //添加搜索框
+    ZXSearchField *searchField=[[ZXSearchField alloc]init];
+    searchField.frame=CGRectMake(btn.frame.origin.x+btn.frame.size.width+10, btn.frame.origin.y, 150, 30);
+    [searchField setBackgroundColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.4]];
+    searchField.textColor=[UIColor whiteColor];
+    [self.view addSubview:searchField];
+    [[ZXSearchField appearance]setTintColor:[UIColor whiteColor]];
+    self.searchField=searchField;
+    searchField.clearButtonMode=  UITextFieldViewModeAlways;
+    
+    [searchField addTarget:self action:@selector(searchFieldEditing) forControlEvents:UIControlEventEditingChanged];
+    searchField.delegate=self;
+    
+    //添加搜索按钮
+    UIButton *searchBtn=[UIButton new];
+    [searchBtn setTitle:@"搜索" forState:UIControlStateNormal];
+    searchBtn.frame=CGRectMake(searchField.frame.origin.x+searchField.frame.size.width+10, searchField.frame.origin.y,50, 30);
+    [searchBtn setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.4]];
+    [self.view addSubview:searchBtn];
+    [searchBtn addTarget:self action:@selector(searchBtnDidClick) forControlEvents:UIControlEventTouchUpInside];
 
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
 
-    
+//点选搜索按钮  搜索搜索框中的关键字
+-(void)searchBtnDidClick{
+
+    [self searchWihtType:@"i" Name:self.searchField.text];
+
+    [self.searchField resignFirstResponder];
+ 
+//
+
+}
+//搜索框被编辑时调用
+//当搜索框为空的时候显示原始列表
+-(void)searchFieldEditing{
+
+    if ([self.searchField.text isEqual:@""]) {
+        self.count=self.count;
+        [self.searchField resignFirstResponder];
+    }
+//       NSLog(@"editing");
+
+}
+
+
+
+
+-(void)searchWihtType:(NSString *)type Name:(NSString *)name{
+
+    [self.shouldShowList removeAllObjects];
+    NSMutableArray *tempList=[NSMutableArray array];
+    for (ZXFileModel *model in self.pictureUrlList) {
+        if ([model.fileType containsString:type]&&[model.fileName containsString:name]) {
+            
+            [tempList addObject:model];
+        }
+        
+    }
+    self.shouldShowList=tempList;
+
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField{
+   
+
+
 }
 
 #pragma mark - Table view data source
@@ -156,7 +204,7 @@
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *ID=@"picture_Cell";
     ZXPictureCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:ID forIndexPath:indexPath];
-   ZXFileModel *model=self.pictureUrlList[indexPath.row];
+   ZXFileModel *model=self.shouldShowList[indexPath.row];
     NSLog(@"%@",model.filePath);
     if ([model.fileType isEqualToString:@"image"]) {
         ZXBigPictureController *bigVw=[[ZXBigPictureController alloc]init];

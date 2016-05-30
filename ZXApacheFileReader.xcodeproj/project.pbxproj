@@ -20,6 +20,7 @@
 		049645DA1CE0790C0064F847 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 049645D21CE0790C0064F847 /* AppDelegate.m */; };
 		049645DB1CE0790C0064F847 /* NetWorkTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 049645D41CE0790C0064F847 /* NetWorkTool.m */; };
 		049645DC1CE0790C0064F847 /* ZXPictureCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 049645D71CE0790C0064F847 /* ZXPictureCell.m */; };
+		04A7383A1CFC5F2B005FC4CD /* ZXSearchField.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A738391CFC5F2B005FC4CD /* ZXSearchField.m */; };
 		04B5AE551CDDDB05000C68F9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B5AE541CDDDB05000C68F9 /* main.m */; };
 		04B5AE601CDDDB05000C68F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04B5AE5F1CDDDB05000C68F9 /* Assets.xcassets */; };
 		04B5AE631CDDDB05000C68F9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04B5AE611CDDDB05000C68F9 /* LaunchScreen.storyboard */; };
@@ -52,6 +53,8 @@
 		049645D41CE0790C0064F847 /* NetWorkTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetWorkTool.m; sourceTree = "<group>"; };
 		049645D61CE0790C0064F847 /* ZXPictureCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZXPictureCell.h; sourceTree = "<group>"; };
 		049645D71CE0790C0064F847 /* ZXPictureCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZXPictureCell.m; sourceTree = "<group>"; };
+		04A738381CFC5F2B005FC4CD /* ZXSearchField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZXSearchField.h; sourceTree = "<group>"; };
+		04A738391CFC5F2B005FC4CD /* ZXSearchField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZXSearchField.m; sourceTree = "<group>"; };
 		04B5AE501CDDDB05000C68F9 /* ZXApacheFileReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZXApacheFileReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04B5AE541CDDDB05000C68F9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		04B5AE5F1CDDDB05000C68F9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -119,6 +122,8 @@
 		049645D51CE0790C0064F847 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				04A738381CFC5F2B005FC4CD /* ZXSearchField.h */,
+				04A738391CFC5F2B005FC4CD /* ZXSearchField.m */,
 				049645D61CE0790C0064F847 /* ZXPictureCell.h */,
 				049645D71CE0790C0064F847 /* ZXPictureCell.m */,
 				0406AAF91CE4ABDF00AA3B7A /* UIImage+changeSize.h */,
@@ -313,6 +318,7 @@
 			files = (
 				049645DA1CE0790C0064F847 /* AppDelegate.m in Sources */,
 				049645D81CE0790C0064F847 /* ZXHomePage.m in Sources */,
+				04A7383A1CFC5F2B005FC4CD /* ZXSearchField.m in Sources */,
 				045941E41CE0CA1F005DA8B0 /* ZXBigPictureController.m in Sources */,
 				04B63F401CE5FFC50075A9A2 /* ZXFileModel.m in Sources */,
 				049645DB1CE0790C0064F847 /* NetWorkTool.m in Sources */,
