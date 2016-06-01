@@ -92,7 +92,7 @@
                 
         //如果下载到了数据则创建具体请求列表并创建图片浏览器
         if (self.list) {
-            NSMutableArray *mArr=[NSMutableArray array];
+            NSMutableArray *mArr;
             mArr= (NSMutableArray *)[NSArray yy_modelArrayWithClass:[ZXFileModel class] json:self.list];
             
             NSString *baseUrl=self.urlField.text;

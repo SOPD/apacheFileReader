@@ -32,6 +32,7 @@
 @property(nonatomic,assign)int count;
 
 @property(nonatomic,assign)int downCount;
+
 @property(nonatomic,strong)videoPlayerController *videoVC;
 
 @property (nonatomic,strong)ZXSearchField *searchField;
@@ -255,6 +256,8 @@
         self.videoVC=[videoPlayerController new];
         self.videoVC.videoUrl=url;
         [self.view addSubview:self.videoVC.mpC.view];
+        
+        //9.0方法  
 //        AVPlayerViewController *pVC = [AVPlayerViewController new];
 //        
 //        //3. 创建player --> 设置时需要传入网址

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+//暂留接口
 @interface UIImage (changeSize)
 
 @end

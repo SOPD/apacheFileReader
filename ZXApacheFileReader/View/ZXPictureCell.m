@@ -28,12 +28,14 @@
     NSString *path=[NSString stringWithFormat:@"http://%@/%@",baseUrl,filePath];
     NSURL *URL=[NSURL URLWithString:[path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     
+    //设置同时最大下载数为15
     
+    [SDWebImageManager sharedManager].imageDownloader.maxConcurrentDownloads=20;
     [[SDWebImageManager sharedManager]downloadImageWithURL:URL options:SDWebImageContinueInBackground progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-        
+    
         
     }  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-        
+       
         self.imageVw.image=image;
         
         

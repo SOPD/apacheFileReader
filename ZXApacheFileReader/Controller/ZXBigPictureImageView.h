@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-typedef void(^touchsEnd)();
+//暂留接口
 @interface ZXBigPictureImageView : UIImageView
 
 @end
