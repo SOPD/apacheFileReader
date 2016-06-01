@@ -17,6 +17,7 @@
 #import "videoPlayerController.h"
 #import <AVKit/AVKit.h>
 #import "ZXSearchField.h"
+#import "ZXBlackCircleBaseButton.h"
 
 
 @interface ZXHomePage ()<UITextFieldDelegate>
@@ -37,10 +38,18 @@
 
 @property (nonatomic,strong)ZXSearchField *searchField;
 
+@property (nonatomic,strong)NSMutableArray *showList;
+
 
 @end
 
 @implementation ZXHomePage
+
+-(void)setShowList:(NSMutableArray *)showList{
+    _showList=showList;
+   [self.collectionView reloadData];
+
+}
 
 -(void)setShouldShowList:(NSMutableArray *)shouldShowList{
     _shouldShowList=shouldShowList;
@@ -63,23 +72,28 @@
 -(void)setCount:(int)count{
     _count=count;
     NSMutableArray *arr=[NSMutableArray array];
-    if (self.pictureUrlList.count>count) {
+    if (self.shouldShowList.count>count) {
         for (int i=0; i<count; i++) {
-            [arr addObject:self.pictureUrlList[i]];
+            [arr addObject:self.shouldShowList[i]];
         }
     }else{
     
         for (int i=0; i<self.pictureUrlList.count; i++) {
-            [arr addObject:self.pictureUrlList[i]];
+            [arr addObject:self.shouldShowList[i]];
             
         }
     
     }
+    NSLog(@"%@",arr);
   
-    self.shouldShowList=arr;
+    self.showList=arr;
 }
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.shouldShowList= [NSMutableArray arrayWithArray:self.pictureUrlList ];
+ 
     
     UIButton *btn=[UIButton new];
     [btn setTitle:@"返回" forState:UIControlStateNormal];
@@ -91,7 +105,8 @@
     
     [btn addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     
-    self.count=30;
+    self.count=15;
+ //   NSLog(@"%@",self.showList);
     //设置数据源
     self.collectionView.dataSource=self;
     self.collectionView.delegate=self;
@@ -118,6 +133,14 @@
     [searchBtn setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.4]];
     [self.view addSubview:searchBtn];
     [searchBtn addTarget:self action:@selector(searchBtnDidClick) forControlEvents:UIControlEventTouchUpInside];
+    
+    //添加底部控制栏按钮
+    ZXBlackCircleBaseButton *homeBtn= [[ZXBlackCircleBaseButton alloc]initWithRingColor:[UIColor redColor] and:[UIColor blueColor]];
+    homeBtn.frame=CGRectMake(0, [UIScreen mainScreen].bounds.size.height-70, 70, 70);
+    homeBtn.layer.cornerRadius=homeBtn.bounds.size.width/2;
+    homeBtn.layer.masksToBounds=YES;
+   homeBtn.backgroundColor=[UIColor blackColor];
+    [self.view addSubview:homeBtn];
 
 }
 
@@ -146,27 +169,26 @@
 
 
 
-
+#pragma mark searchList---
 -(void)searchWihtType:(NSString *)type Name:(NSString *)name{
 
+    //从pictureList中读取检索的目录 保存到shouldShowList中
     [self.shouldShowList removeAllObjects];
     NSMutableArray *tempList=[NSMutableArray array];
-    for (ZXFileModel *model in self.pictureUrlList) {
+    for (ZXFileModel *model in self.shouldShowList) {
         if ([model.fileType containsString:type]&&[model.fileName containsString:name]) {
             
             [tempList addObject:model];
         }
         
     }
+    
     self.shouldShowList=tempList;
+    self.count=15;
 
 }
 
--(void)textFieldDidEndEditing:(UITextField *)textField{
-   
 
-
-}
 
 #pragma mark - Table view data source
 
@@ -176,7 +198,7 @@
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
 
-    return self.shouldShowList.count;
+    return self.showList.count;
 }
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
    static NSString *ID=@"picture_Cell";
@@ -191,7 +213,7 @@
     NSString *url=self.baseUrl;
     
     cell.url=url;
-    cell.model=self.shouldShowList[indexPath.row];
+    cell.model=self.showList[indexPath.row];
   
     cell.cellBlock=^(NSIndexPath * index,ZXPictureCell *cell){
         self.HomeBlock(index,cell);
@@ -205,7 +227,7 @@
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *ID=@"picture_Cell";
     ZXPictureCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:ID forIndexPath:indexPath];
-   ZXFileModel *model=self.shouldShowList[indexPath.row];
+   ZXFileModel *model=self.showList[indexPath.row];
     NSLog(@"%@",model.filePath);
     if ([model.fileType isEqualToString:@"image"]) {
         ZXBigPictureController *bigVw=[[ZXBigPictureController alloc]init];
@@ -256,29 +278,6 @@
         self.videoVC=[videoPlayerController new];
         self.videoVC.videoUrl=url;
         [self.view addSubview:self.videoVC.mpC.view];
-        
-        //9.0方法  
-//        AVPlayerViewController *pVC = [AVPlayerViewController new];
-//        
-//        //3. 创建player --> 设置时需要传入网址
-//        pVC.player = [AVPlayer playerWithURL:url];
-//        
-//        //4. 开始播放
-//        [pVC.player play];
-//    
-//        //5. 模态弹出
-//        //[self presentViewController:pVC animated:YES completion:nil];
-//        
-//        //5. 如果想要自定义播放器的大小,应该自定义 --> 设置frame / 添加到视图中
-//
-//        pVC.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, 400);
-//        pVC.view.center=self.view.center;
-//        
-//        // CGAffineTransform rotation = CGAffineTransformMakeRotation(M_PI_2);
-//        
-//        // pVC.view.transform=rotation;
-//        
-//        [self.view addSubview:pVC.view];
         
         
         

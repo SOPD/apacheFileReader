@@ -25,6 +25,7 @@
 		04B5AE601CDDDB05000C68F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04B5AE5F1CDDDB05000C68F9 /* Assets.xcassets */; };
 		04B5AE631CDDDB05000C68F9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04B5AE611CDDDB05000C68F9 /* LaunchScreen.storyboard */; };
 		04B63F401CE5FFC50075A9A2 /* ZXFileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B63F3F1CE5FFC50075A9A2 /* ZXFileModel.m */; };
+		04B87F051CFF0589006D1013 /* ZXBlackCircleBaseButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B87F041CFF0589006D1013 /* ZXBlackCircleBaseButton.m */; };
 		D61ADF1C42B0D92BBF9F1967 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E65EB61C25DAFE7F5D46EC1 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -62,6 +63,8 @@
 		04B5AE641CDDDB05000C68F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04B63F3E1CE5FFC50075A9A2 /* ZXFileModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZXFileModel.h; sourceTree = "<group>"; };
 		04B63F3F1CE5FFC50075A9A2 /* ZXFileModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZXFileModel.m; sourceTree = "<group>"; };
+		04B87F031CFF0589006D1013 /* ZXBlackCircleBaseButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZXBlackCircleBaseButton.h; path = View/ZXBlackCircleBaseButton.h; sourceTree = "<group>"; };
+		04B87F041CFF0589006D1013 /* ZXBlackCircleBaseButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZXBlackCircleBaseButton.m; path = View/ZXBlackCircleBaseButton.m; sourceTree = "<group>"; };
 		0F71B502631177E7E1D7E61F /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		3C9D1DB7BC56BFDC85AB7AF1 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		8E65EB61C25DAFE7F5D46EC1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -155,6 +158,7 @@
 		04B5AE521CDDDB05000C68F9 /* ZXApacheFileReader */ = {
 			isa = PBXGroup;
 			children = (
+				04B87F061CFF0596006D1013 /* BaseView */,
 				049645D51CE0790C0064F847 /* View */,
 				049645CA1CE0790C0064F847 /* Controller */,
 				049645CF1CE0790C0064F847 /* Model */,
@@ -174,6 +178,15 @@
 				04B5AE541CDDDB05000C68F9 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		04B87F061CFF0596006D1013 /* BaseView */ = {
+			isa = PBXGroup;
+			children = (
+				04B87F031CFF0589006D1013 /* ZXBlackCircleBaseButton.h */,
+				04B87F041CFF0589006D1013 /* ZXBlackCircleBaseButton.m */,
+			);
+			name = BaseView;
 			sourceTree = "<group>";
 		};
 		5889184FE88ACE50F16D3522 /* Pods */ = {
@@ -320,6 +333,7 @@
 				049645D81CE0790C0064F847 /* ZXHomePage.m in Sources */,
 				04A7383A1CFC5F2B005FC4CD /* ZXSearchField.m in Sources */,
 				045941E41CE0CA1F005DA8B0 /* ZXBigPictureController.m in Sources */,
+				04B87F051CFF0589006D1013 /* ZXBlackCircleBaseButton.m in Sources */,
 				04B63F401CE5FFC50075A9A2 /* ZXFileModel.m in Sources */,
 				049645DB1CE0790C0064F847 /* NetWorkTool.m in Sources */,
 				04B5AE551CDDDB05000C68F9 /* main.m in Sources */,
