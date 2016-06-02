@@ -92,6 +92,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self.collectionView registerClass:[ZXPictureCell class] forCellWithReuseIdentifier:@"picture_Cell"];
     self.shouldShowList= [NSMutableArray arrayWithArray:self.pictureUrlList ];
  
     
@@ -135,8 +137,8 @@
     [searchBtn addTarget:self action:@selector(searchBtnDidClick) forControlEvents:UIControlEventTouchUpInside];
     
     //添加底部控制栏按钮
-    ZXBlackCircleBaseButton *homeBtn= [[ZXBlackCircleBaseButton alloc]initWithRingColor:[UIColor redColor] and:[UIColor blueColor]];
-    homeBtn.frame=CGRectMake(0, [UIScreen mainScreen].bounds.size.height-70, 70, 70);
+    ZXBlackCircleBaseButton *homeBtn= [[ZXBlackCircleBaseButton alloc]initWithRingColor:[UIColor whiteColor] and:[UIColor blueColor]];
+    homeBtn.frame=CGRectMake(0, [UIScreen mainScreen].bounds.size.height-70, 55, 55);
     homeBtn.layer.cornerRadius=homeBtn.bounds.size.width/2;
     homeBtn.layer.masksToBounds=YES;
    homeBtn.backgroundColor=[UIColor blackColor];
@@ -202,8 +204,7 @@
 }
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
    static NSString *ID=@"picture_Cell";
- 
-    [collectionView registerClass:[ZXPictureCell class] forCellWithReuseIdentifier:ID];
+
     ZXPictureCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:ID forIndexPath:indexPath];
     cell.indexPath=indexPath;
     
