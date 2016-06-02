@@ -10,19 +10,20 @@
 
 @implementation ZXSearchField
 
-
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.layer.cornerRadius=4;
+        self.clipsToBounds=YES;
+    }
+    return self;
+}
 
 - (void)drawRect:(CGRect)rect {
   CGContextRef ref=UIGraphicsGetCurrentContext();
-    UIBezierPath *path=[UIBezierPath bezierPath];
-    [path moveToPoint:CGPointMake(0, 0)];
-    [path addLineToPoint:CGPointMake(self.frame.size.width,0)];
-    [path moveToPoint:CGPointMake(self.frame.size.width, 0)];
-    [path addLineToPoint:CGPointMake(self.frame.size.width, self.frame.size.height)];
-    [path moveToPoint:CGPointMake(self.frame.size.width, self.frame.size.height)];
-    [path addLineToPoint:CGPointMake(0, self.frame.size.height)];
-    [path moveToPoint:CGPointMake(0, self.frame.size.height)];
-    [path addLineToPoint:CGPointMake(0, 0)];
+    UIBezierPath *path=[UIBezierPath bezierPathWithRoundedRect:CGRectMake(1, 1, self.bounds.size.width-2, self.bounds.size.height-2) cornerRadius:5];
+
     path.lineWidth=4;
     
     //利用上下文设定绘图的宽度

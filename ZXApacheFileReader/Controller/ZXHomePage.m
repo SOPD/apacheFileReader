@@ -84,7 +84,7 @@
         }
     
     }
-    NSLog(@"%@",arr);
+  //  NSLog(@"%@",arr);
   
     self.showList=arr;
 }
