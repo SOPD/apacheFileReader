@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
 @interface ZXSearchField : UITextField
+
 
 @end

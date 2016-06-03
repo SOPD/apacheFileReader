@@ -112,7 +112,7 @@
     btn.backgroundColor=[UIColor redColor];
     [self.mpC.view addSubview:btn];
     [btn addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
-    NSLog(@"naturalSize%@",NSStringFromCGSize(self.mpC.naturalSize));
+   // NSLog(@"naturalSize%@",NSStringFromCGSize(self.mpC.naturalSize));
     UIButton *changebtn=[[UIButton alloc]init
                    ];
     
@@ -151,6 +151,7 @@
 }
 -(void)back{
 
+    [self.mpC stop];
 
     [self.mpC.view removeFromSuperview];
 

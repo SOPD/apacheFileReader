@@ -14,7 +14,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.layer.cornerRadius=4;
+        self.layer.cornerRadius=5;
         self.clipsToBounds=YES;
     }
     return self;
@@ -24,7 +24,7 @@
   CGContextRef ref=UIGraphicsGetCurrentContext();
     UIBezierPath *path=[UIBezierPath bezierPathWithRoundedRect:CGRectMake(1, 1, self.bounds.size.width-2, self.bounds.size.height-2) cornerRadius:5];
 
-    path.lineWidth=4;
+    path.lineWidth=2;
     
     //利用上下文设定绘图的宽度
     CGContextSetLineWidth(ref,4);

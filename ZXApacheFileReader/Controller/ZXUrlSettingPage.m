@@ -113,46 +113,6 @@
             homePage.baseUrl=baseUrl;
             
             self.home=homePage;
-            
-            
-            
-         
-            
-            //定义长按调用的BLOCK
-            homePage.HomeBlock=^(NSIndexPath *index,ZXPictureCell *cell){
-                if ([cell.model.fileType isEqualToString:@"image"]) {
-                    //添加选项
-                    UIAlertController *alert=[UIAlertController alertControllerWithTitle:@"保存这张图片" message:nil preferredStyle:UIAlertControllerStyleAlert];
-                    
-                    //保存选项
-                    UIAlertAction *action=[UIAlertAction actionWithTitle:@"保存" style: UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                        //拼接完整地址
-                        NSString *baseUrl=cell.url;
-                        NSString *path=cell.model.filePath;
-                        NSString *url=[NSString stringWithFormat:@"http://%@/%@",baseUrl,path];
-                        
-                        //下载图片
-                        [self downLoadImage:url];
-                        
-                    }];
-                    
-                    
-                    //取消选项
-                    UIAlertAction *action2=[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                        
-                    }];
-                    
-                    [alert addAction:action];
-                    [alert addAction:action2];
-                    
-                    
-                    //      显示AlertView
-                    [self.home presentViewController:alert animated:YES completion:nil];
-                    
-                };
-
-                };
-                
             //显示homePage
             [self presentViewController:homePage animated:YES completion:^{
                 
@@ -181,35 +141,6 @@
 
 }
 
--(void)downLoadImage:(NSString *)imgUrl{
-    NSLog(@"%@",imgUrl);
-
-    [[SDWebImageManager sharedManager]downloadImageWithURL:[NSURL URLWithString:[imgUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] ] options:SDWebImageContinueInBackground progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-        
-        
-    }  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-        
-        UIImageWriteToSavedPhotosAlbum(image,self,@selector(image:didFinishSavingWithError:contextInfo:),nil);
-        
-    }];
-
-
-
-
-}
-- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error
-  contextInfo:(void *)contextInfo
-{
-    if (error != NULL)
-    {
-        // Show error message...
-        
-    }
-    else  // No errors
-    {
-       
-    }
-}
 /**
  *  设置子控件
  */

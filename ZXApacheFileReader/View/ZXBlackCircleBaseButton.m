@@ -22,6 +22,7 @@
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
+  
 
     CGContextRef ref=UIGraphicsGetCurrentContext();
     UIBezierPath *path=[UIBezierPath bezierPathWithRoundedRect:CGRectMake(2, 2, self.bounds.size.width-4, self.bounds.size.height-4) cornerRadius:self.bounds.size.width];

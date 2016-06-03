@@ -18,7 +18,7 @@
 #import <AVKit/AVKit.h>
 #import "ZXSearchField.h"
 #import "ZXBlackCircleBaseButton.h"
-
+#define ZX_COLOR(r,g,b,a)   [UIColor colorWithRed:r green:g blue:b alpha:a]
 
 @interface ZXHomePage ()<UITextFieldDelegate>
 
@@ -53,9 +53,7 @@
 
 -(void)setShouldShowList:(NSMutableArray *)shouldShowList{
     _shouldShowList=shouldShowList;
-    
-   [self.collectionView reloadData];
-    
+    [self.collectionView reloadData];
 
 }
 -(SDWebImageManager *)manager{
@@ -92,7 +90,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    [self setBlokc];
+    NSLog(@"%@,%@",self.view,self.collectionView);
     [self.collectionView registerClass:[ZXPictureCell class] forCellWithReuseIdentifier:@"picture_Cell"];
     self.shouldShowList= [NSMutableArray arrayWithArray:self.pictureUrlList ];
  
@@ -100,7 +99,7 @@
     UIButton *btn=[UIButton new];
     [btn setTitle:@"返回" forState:UIControlStateNormal];
     btn.frame=CGRectMake(10, 20,40, 30);
-    [btn setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.2]];
+    [btn setBackgroundColor:ZX_COLOR(0, 0, 0, 0.4)];
     
     //添加返回上一层按钮
     [self.view addSubview:btn];
@@ -118,7 +117,7 @@
     //添加搜索框
     ZXSearchField *searchField=[[ZXSearchField alloc]init];
     searchField.frame=CGRectMake(btn.frame.origin.x+btn.frame.size.width+10, btn.frame.origin.y, 150, 30);
-    [searchField setBackgroundColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.4]];
+    [searchField setBackgroundColor:ZX_COLOR(0, 0, 0, 0.4)];
     searchField.textColor=[UIColor whiteColor];
     [self.view addSubview:searchField];
     [[ZXSearchField appearance]setTintColor:[UIColor whiteColor]];
@@ -137,11 +136,11 @@
     [searchBtn addTarget:self action:@selector(searchBtnDidClick) forControlEvents:UIControlEventTouchUpInside];
     
     //添加底部控制栏按钮
-    ZXBlackCircleBaseButton *homeBtn= [[ZXBlackCircleBaseButton alloc]initWithRingColor:[UIColor whiteColor] and:[UIColor blueColor]];
+    ZXBlackCircleBaseButton *homeBtn= [[ZXBlackCircleBaseButton alloc]initWithRingColor:ZX_COLOR(218, 218, 218, 0.4) and:ZX_COLOR(14, 14, 14, 0.4)];
     homeBtn.frame=CGRectMake(0, [UIScreen mainScreen].bounds.size.height-70, 55, 55);
     homeBtn.layer.cornerRadius=homeBtn.bounds.size.width/2;
     homeBtn.layer.masksToBounds=YES;
-   homeBtn.backgroundColor=[UIColor blackColor];
+   homeBtn.backgroundColor=ZX_COLOR(0, 0, 0, 0.4);
     [self.view addSubview:homeBtn];
 
 }
@@ -248,7 +247,7 @@
         NSString *filePath= model.filePath;
         NSString *path=[NSString stringWithFormat:@"http://%@/%@",self.baseUrl,filePath];
        UIWebView *webView=[[UIWebView alloc]initWithFrame:self.view.bounds];
-        NSString *url=[path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *url=[path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]];
         
 
         
@@ -287,6 +286,8 @@
  
 
   }
+
+
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
     NSLog(@"%f,%f",scrollView.contentOffset.y,((self.count/3-4)*[UIScreen mainScreen].bounds.size.height/4));
     CGFloat slide=((self.count/3-4)*[UIScreen mainScreen].bounds.size.height/4);
@@ -299,24 +300,33 @@
 
 }
 
+
 -(void)WebViewBack:(UIButton *)sender{
     [sender.superview removeFromSuperview];
-
+    
 }
 
+
+/**
+ *  关闭Home
+ */
 -(void)back{
-
-
     [self dismissViewControllerAnimated:YES completion:nil];
-
 }
 
 /**
+ 判断文件是否为视频
+ 支持格式
  mov m4v mp4  avi
  */
 -(BOOL)fileIsVideo:(NSString *)fileName{
+    //设为非视频
     BOOL isVideo=NO;
+    
+    //视频类型列表
     NSArray *videoTypeList=@[@"mov",@"m4v",@"mp4",@"avi",@"AVI",@"MP4",@"M4V",@"MOV"];
+    
+    //遍历视频列表 判断每个文件是否是视频
     for (NSString *type in videoTypeList) {
         if ([fileName containsString:type]) {
             isVideo=YES;
@@ -326,6 +336,13 @@
     return isVideo;
 
 }
+
+/**
+ *  屏幕旋转(暂时取消)
+ *
+ *  @param size        屏幕尺寸
+ *  @param coordinator
+ */
 -(void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator{
     NSLog(@"%@",NSStringFromCGSize(size));
  
@@ -342,5 +359,88 @@
         }
     [self.collectionView reloadData];
   
+}
+
+/**
+ *  设定CELL长按调用的Block
+ */
+-(void)setBlokc{
+
+           //弱引用防止循环引用
+          __weak ZXHomePage *weakSelf=self;
+    
+  self.HomeBlock=^(NSIndexPath *index,ZXPictureCell *cell){
+      
+      //判断如果该cell所指的链接是图片
+        if ([cell.model.fileType isEqualToString:@"image"]) {
+            
+            //添加保存图片选项
+            UIAlertController *alert=[UIAlertController alertControllerWithTitle:@"保存这张图片" message:nil preferredStyle:UIAlertControllerStyleAlert];
+            
+     
+      
+            //保存图片
+            UIAlertAction *action=[UIAlertAction actionWithTitle:@"保存" style: UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                //拼接完整地址
+                NSString *baseUrl=cell.url;
+                NSString *path=cell.model.filePath;
+                NSString *url=[NSString stringWithFormat:@"http://%@/%@",baseUrl,path];
+                
+                //下载图片
+                [weakSelf downLoadImage:url];
+                
+            }];
+            
+            
+            //取消选项
+            UIAlertAction *action2=[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                
+            }];
+            
+            //添加两个选项
+            [alert addAction:action];
+            [alert addAction:action2];
+            
+            
+            //      显示AlertView
+            [weakSelf presentViewController:alert animated:YES completion:nil];
+            
+        };
+        
+    };
+}
+
+/**
+ *  下载图片
+ *
+ *  @param imgUrl 图片地址
+ */
+-(void)downLoadImage:(NSString *)imgUrl{
+    NSLog(@"%@",imgUrl);
+    
+    [[SDWebImageManager sharedManager]downloadImageWithURL:[NSURL URLWithString:[imgUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] ] options:SDWebImageContinueInBackground progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+    }  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+        
+        //下载完成后保存到手机相册
+        UIImageWriteToSavedPhotosAlbum(image,self,@selector(image:didFinishSavingWithError:contextInfo:),nil);
+        
+    }];
+    
+    
+    
+    
+}
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error
+  contextInfo:(void *)contextInfo
+{
+    if (error != NULL)
+    {
+        // Show error message...
+        
+    }
+    else  // No errors
+    {
+        
+    }
 }
 @end
