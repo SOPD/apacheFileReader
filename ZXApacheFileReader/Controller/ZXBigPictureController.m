@@ -56,11 +56,11 @@
 @implementation ZXBigPictureController
 -(void)setChangeValue:(CGFloat)changeValue{
  //限定缩放率系数范围
-    if (changeValue>4.0) {
-        changeValue=4.0;
-    }if (changeValue<-4.0) {
-        changeValue=-4.0;
-    }if (changeValue<4.0&&changeValue>-4.0) {
+    if (changeValue>2.0) {
+        changeValue=2.0;
+    }if (changeValue<-2.0) {
+        changeValue=-2.0;
+    }if (changeValue<2.0&&changeValue>-2.0) {
     _changeValue=changeValue;
     }   if (!changeValue) {
         _changeValue=0;
@@ -72,8 +72,8 @@
 
 -(void)setTransForm:(CGFloat)transForm{
     //限定图片缩放范围
-    if (transForm>5.0) {
-        transForm=5.0;
+    if (transForm>3.0) {
+        transForm=3.0;
     }if (transForm<0.2) {
         transForm=0.2;
     }
@@ -105,6 +105,9 @@
     [super viewDidLoad];
     self.transForm=1;
     self.scrollerVw=[[UIScrollView alloc]init];
+    self.scrollerVw.decelerationRate=0;
+    self.scrollerVw.bouncesZoom=NO;
+    self.scrollerVw.bounces=NO;
     [self.view addSubview:self.scrollerVw];
 
     self.scrollerVw.frame=[UIScreen mainScreen].bounds;
@@ -186,7 +189,7 @@
     self.transForm=1+0.03*self.changeValue;
     
     if (sender.numberOfTouches==2) {
-        if (self.imgVw.frame.size.height<[UIScreen mainScreen].bounds.size.height*5) {
+        if (self.imgVw.frame.size.height<[UIScreen mainScreen].bounds.size.height*3) {
 
            
             self.imgVw.transform=CGAffineTransformScale(self.imgVw.transform, self.transForm, self.transForm);
@@ -199,7 +202,7 @@
             self.view.superview.userInteractionEnabled=NO;
             
         [UIView animateWithDuration:0.4 animations:^{
-          self.imgVw.transform=CGAffineTransformMakeScale(5.99    , 5.99);
+          self.imgVw.transform=CGAffineTransformMakeScale(2.8    , 2.8);
         } completion:^(BOOL finished) {
             self.view.superview.userInteractionEnabled=YES;
         }];

@@ -76,7 +76,7 @@
         }
     }else{
     
-        for (int i=0; i<self.pictureUrlList.count; i++) {
+        for (int i=0; i<self.shouldShowList.count; i++) {
             [arr addObject:self.shouldShowList[i]];
             
         }
@@ -161,6 +161,7 @@
 -(void)searchFieldEditing{
 
     if ([self.searchField.text isEqual:@""]) {
+        self.shouldShowList=[NSMutableArray arrayWithArray:self.pictureUrlList];
         self.count=self.count;
         [self.searchField resignFirstResponder];
     }
@@ -176,7 +177,7 @@
     //从pictureList中读取检索的目录 保存到shouldShowList中
     [self.shouldShowList removeAllObjects];
     NSMutableArray *tempList=[NSMutableArray array];
-    for (ZXFileModel *model in self.shouldShowList) {
+    for (ZXFileModel *model in self.pictureUrlList) {
         if ([model.fileType containsString:type]&&[model.fileName containsString:name]) {
             
             [tempList addObject:model];
@@ -213,7 +214,7 @@
     NSString *url=self.baseUrl;
     
     cell.url=url;
-    cell.model=self.showList[indexPath.row];
+    cell.model=self.shouldShowList[indexPath.row];
   
     cell.cellBlock=^(NSIndexPath * index,ZXPictureCell *cell){
         self.HomeBlock(index,cell);
@@ -289,6 +290,7 @@
 
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    [self.searchField resignFirstResponder];
     NSLog(@"%f,%f",scrollView.contentOffset.y,((self.count/3-4)*[UIScreen mainScreen].bounds.size.height/4));
     CGFloat slide=((self.count/3-4)*[UIScreen mainScreen].bounds.size.height/4);
     if (scrollView.contentOffset.y>slide) {
