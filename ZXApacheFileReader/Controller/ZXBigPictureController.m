@@ -84,7 +84,8 @@
 
 -(void)setImgVw:(ZXBigPictureImageView *)imgVw{
     _imgVw=imgVw;
-    NSString *path=[self.imgUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    NSString *path=[self.imgUrl stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSURL *RL=[NSURL URLWithString:path];
      [imgVw sd_setImageWithURL:RL completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
       
@@ -125,7 +126,7 @@
     
     UIButton *btn=[UIButton new];
     [btn setTitle:@"返回" forState:UIControlStateNormal];
-    btn.frame=CGRectMake(10, 20,40, 40);
+    btn.frame=CGRectMake(10, 20,40, 30);
     [btn setBackgroundColor:[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.2]];
     self.btn=btn;
     //添加返回上一层按钮
@@ -137,7 +138,7 @@
     
     //添加旋转手势
     UIRotationGestureRecognizer *rota=[[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(imgRotation:)];
-    [self.imgVw addGestureRecognizer:rota];
+    [self.scrollerVw addGestureRecognizer:rota];
     //rota.delegate=self;
     
     //添加长按手势
@@ -146,7 +147,10 @@
     [self.imgVw addGestureRecognizer:longest];
     //添加缩放手势
     UIPinchGestureRecognizer *gest=[[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(doubleTouch:)];
-    [self.imgVw addGestureRecognizer:gest];
+    [self.scrollerVw addGestureRecognizer:gest];
+    
+    UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(scrollerTap:)];
+    [self.scrollerVw addGestureRecognizer:tap];
     
     gest.delegate=self;
 
@@ -154,14 +158,21 @@
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 
-
 {
 //允许不同的手势同时执行
     return YES;
 }
 
 
--(void)imgRotation:(UIRotationGestureRecognizer *)sender{
+- (void)scrollerTap:(UITapGestureRecognizer *)sender{
+    if (self.imgVw.frame.size.width<[UIScreen mainScreen].bounds.size.width) {
+           [self back];
+    }
+ 
+
+
+}
+- (void)imgRotation:(UIRotationGestureRecognizer *)sender{
     
     //旋转手势执行
     self.imgVw.transform=CGAffineTransformRotate(self.imgVw.transform, sender.velocity*0.04);
@@ -287,6 +298,7 @@
     [super didReceiveMemoryWarning];
 
 }
+
 
 
 @end

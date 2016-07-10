@@ -42,8 +42,6 @@
     if (_tool==nil) {
         _tool=[NetWorkTool sharedToolWithBaseUrl:nil];
     }
-
-
     return _tool;
 }
 - (void)viewDidLoad {
@@ -70,11 +68,12 @@
     
 }
 
+
 /**
  *  点击连接按钮
  */
 -(void)didConnectButtonClick{
-    
+
      NSUserDefaults *defaults=[NSUserDefaults standardUserDefaults];
 
     //连接地址栏中的地址
@@ -89,7 +88,8 @@
         //记录网络返回的数据
     self.list=responseObject;
         NSLog(@"下载完成");
-                
+        //将链接加入到历史
+        
         //如果下载到了数据则创建具体请求列表并创建图片浏览器
         if (self.list) {
             NSMutableArray *mArr;
@@ -100,7 +100,7 @@
             
             ZXHomePage *homePage=[[ZXHomePage alloc]initWithCollectionViewLayout:flowLayout];
             
-            
+          
             //设置item布局
             flowLayout.minimumLineSpacing=1;
             flowLayout.minimumInteritemSpacing=1;
@@ -178,8 +178,8 @@
     
     
     self.urlField.bounds=CGRectMake(0, 0, screenW-30, 20);
-    self.urlField.center=CGPointMake(screenW/2, screenH/4+30);
-    
+    self.urlField.center=CGPointMake(screenW/2, 30);
+    self.urlField.backgroundColor=ZX_COLOR(37, 37, 37, 0.4);
     
     self.isKeep.center=CGPointMake(screenW/4, screenH/2);
     self.ConnectButton.bounds=CGRectMake(0, 0, 120, self.isKeep.frame.size.height);
@@ -191,3 +191,4 @@
 }
 
 @end
+

@@ -10,6 +10,7 @@
 #import <UIImageView+WebCache.h>
 #import <AFNetworking/AFImageDownloader.h>
 #import "UIImage+changeSize.h"
+#import "UIImageView+ZXImageReloader.h"
 @interface ZXPictureCell()
 
 @property (nonatomic,strong)UILabel *lbl;
@@ -23,24 +24,26 @@
     _model=model;
     
     
-    NSString *filePath= model.previewPath;
+//    NSString *filePath= model.previewPath;
+    NSString *filePath = model.previewPath;
     NSString *baseUrl=self.url;
     NSString *path=[NSString stringWithFormat:@"http://%@/%@",baseUrl,filePath];
-    NSURL *URL=[NSURL URLWithString:[path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    NSURL *URL=[NSURL URLWithString:[path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
     
     //设置同时最大下载数为15
-    
-    [SDWebImageManager sharedManager].imageDownloader.maxConcurrentDownloads=20;
-    [[SDWebImageManager sharedManager]downloadImageWithURL:URL options:SDWebImageContinueInBackground progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-    
-        
-    }  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-       
-        self.imageVw.image=image;
-        
-        
-    }];
-  
+//    
+//    [SDWebImageManager sharedManager].imageDownloader.maxConcurrentDownloads=20;
+//    [[SDWebImageManager sharedManager]downloadImageWithURL:URL options:SDWebImageContinueInBackground progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+//    
+//        
+//    }  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+//       
+//        self.imageVw.image=image;
+//        
+//        
+//    }];
+ //   [self.imageVw sd_setImageWithURL:URL];
+    [self.imageVw ImageWithUrl:[path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
     self.lbl.text=model.fileName;
 
 }

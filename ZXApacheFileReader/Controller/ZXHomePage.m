@@ -18,9 +18,11 @@
 #import <AVKit/AVKit.h>
 #import "ZXSearchField.h"
 #import "ZXBlackCircleBaseButton.h"
+#import "UIImageView+ZXImageReloader.h"
+#import "NetWorkTool.h"
 #define ZX_COLOR(r,g,b,a)   [UIColor colorWithRed:r green:g blue:b alpha:a]
 
-@interface ZXHomePage ()<UITextFieldDelegate>
+@interface ZXHomePage ()<UITextFieldDelegate,NSURLSessionDataDelegate>
 
 @property (nonatomic,strong)NSMutableArray *shouldShowList;
 
@@ -91,7 +93,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setBlokc];
-    NSLog(@"%@,%@",self.view,self.collectionView);
+//    NSLog(@"%@,%@",self.view,self.collectionView);
     [self.collectionView registerClass:[ZXPictureCell class] forCellWithReuseIdentifier:@"picture_Cell"];
     self.shouldShowList= [NSMutableArray arrayWithArray:self.pictureUrlList ];
  
@@ -135,13 +137,13 @@
     [self.view addSubview:searchBtn];
     [searchBtn addTarget:self action:@selector(searchBtnDidClick) forControlEvents:UIControlEventTouchUpInside];
     
-    //添加底部控制栏按钮
-    ZXBlackCircleBaseButton *homeBtn= [[ZXBlackCircleBaseButton alloc]initWithRingColor:ZX_COLOR(218, 218, 218, 0.4) and:ZX_COLOR(14, 14, 14, 0.4)];
-    homeBtn.frame=CGRectMake(0, [UIScreen mainScreen].bounds.size.height-70, 55, 55);
-    homeBtn.layer.cornerRadius=homeBtn.bounds.size.width/2;
-    homeBtn.layer.masksToBounds=YES;
-   homeBtn.backgroundColor=ZX_COLOR(0, 0, 0, 0.4);
-    [self.view addSubview:homeBtn];
+//    //添加底部控制栏按钮
+//    ZXBlackCircleBaseButton *homeBtn= [[ZXBlackCircleBaseButton alloc]initWithRingColor:ZX_COLOR(218, 218, 218, 0.4) and:ZX_COLOR(14, 14, 14, 0.4)];
+//    homeBtn.frame=CGRectMake(0, [UIScreen mainScreen].bounds.size.height-70, 55, 55);
+//    homeBtn.layer.cornerRadius=homeBtn.bounds.size.width/2;
+//    homeBtn.layer.masksToBounds=YES;
+//   homeBtn.backgroundColor=ZX_COLOR(0, 0, 0, 0.4);
+//    [self.view addSubview:homeBtn];
 
 }
 
@@ -229,7 +231,7 @@
     static NSString *ID=@"picture_Cell";
     ZXPictureCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:ID forIndexPath:indexPath];
    ZXFileModel *model=self.showList[indexPath.row];
-    NSLog(@"%@",model.filePath);
+//    NSLog(@"%@",model.filePath);
     if ([model.fileType isEqualToString:@"image"]) {
         ZXBigPictureController *bigVw=[[ZXBigPictureController alloc]init];
         bigVw.holdPlace=[self.view convertRect:cell.frame fromView:self.collectionView];
@@ -248,7 +250,7 @@
         NSString *filePath= model.filePath;
         NSString *path=[NSString stringWithFormat:@"http://%@/%@",self.baseUrl,filePath];
        UIWebView *webView=[[UIWebView alloc]initWithFrame:self.view.bounds];
-        NSString *url=[path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]];
+        NSString *url=[path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         
 
         
@@ -274,7 +276,7 @@
        //使用视频播放器打开视频
         NSString *filePath= model.filePath;
         NSString *path=[NSString stringWithFormat:@"http://%@/%@",self.baseUrl,filePath];
-        NSURL *url=[NSURL URLWithString:[path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        NSURL *url=[NSURL URLWithString:[path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
       
         self.videoVC=[videoPlayerController new];
         self.videoVC.videoUrl=url;
@@ -291,7 +293,7 @@
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
     [self.searchField resignFirstResponder];
-    NSLog(@"%f,%f",scrollView.contentOffset.y,((self.count/3-4)*[UIScreen mainScreen].bounds.size.height/4));
+//    NSLog(@"%f,%f",scrollView.contentOffset.y,((self.count/3-4)*[UIScreen mainScreen].bounds.size.height/4));
     CGFloat slide=((self.count/3-4)*[UIScreen mainScreen].bounds.size.height/4);
     if (scrollView.contentOffset.y>slide) {
         
@@ -346,7 +348,7 @@
  *  @param coordinator
  */
 -(void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator{
-    NSLog(@"%@",NSStringFromCGSize(size));
+//    NSLog(@"%@",NSStringFromCGSize(size));
  
     UICollectionViewFlowLayout *flowLayout=[UICollectionViewFlowLayout new];
     //设置item布局
@@ -420,7 +422,7 @@
 -(void)downLoadImage:(NSString *)imgUrl{
     NSLog(@"%@",imgUrl);
     
-    [[SDWebImageManager sharedManager]downloadImageWithURL:[NSURL URLWithString:[imgUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] ] options:SDWebImageContinueInBackground progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+    [[SDWebImageManager sharedManager]downloadImageWithURL:[NSURL URLWithString:[imgUrl stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]] options:SDWebImageContinueInBackground progress:^(NSInteger receivedSize, NSInteger expectedSize) {
     }  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
         
         //下载完成后保存到手机相册
@@ -432,6 +434,40 @@
     
     
 }
+
+
+-(void)downLoadMusic:(NSString *)musUrl{
+    NSLog(@"%@",musUrl);
+    
+    
+    NSURLSession *session=[NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+    
+    NSURL *url=[NSURL URLWithString:musUrl];
+    
+    NSURLSessionDownloadTask *task= [session downloadTaskWithURL:url];
+    
+    [task resume];
+    
+
+    
+    
+    
+}
+
+-(void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location{
+
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    
+    NSString *cachesDir = [paths objectAtIndex:0];
+    
+    NSFileManager *fileManager=[NSFileManager defaultManager];
+    
+    NSString *name = [[location lastPathComponent] stringByDeletingPathExtension];
+    
+        [fileManager copyItemAtPath:location.path toPath:[NSString  stringWithFormat:@"%@/%@.mp3",cachesDir,name]error:nil];
+
+}
+
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error
   contextInfo:(void *)contextInfo
 {

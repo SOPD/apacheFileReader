@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "47D3373335F4CA6A6BE12CFA72FABC951A3B2F19",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "47D3373335F4CA6A6BE12CFA72FABC951A3B2F19" : 0,
+    "B111211D58504D4A7F737FAD0939A6210F249BB7" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "615F422E-FC29-4397-A975-75A191421D56",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "47D3373335F4CA6A6BE12CFA72FABC951A3B2F19" : "apacheFileReader%E5%89%AF%E6%9C%AC\/",
+    "B111211D58504D4A7F737FAD0939A6210F249BB7" : "ZXImageReloader\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "ZXApacheFileReader",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "ZXApacheFileReader.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/SOPD\/apacheFileReader.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "47D3373335F4CA6A6BE12CFA72FABC951A3B2F19"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/SOPD\/ZXImageReloader",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "B111211D58504D4A7F737FAD0939A6210F249BB7"
+    }
+  ]
+}
